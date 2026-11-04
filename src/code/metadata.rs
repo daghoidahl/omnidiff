@@ -168,7 +168,8 @@ const PARALLEL_METADATA_MIN_NODES: usize = 16 * 1024;
 /// A panic in any task reaches the caller.
 fn run_tasks<'a>(parallel: bool, tasks: Vec<Box<dyn FnOnce() + Send + 'a>>) {
     let mut tasks = tasks.into_iter();
-    if !parallel {
+    // wasm has no threads: build in order there, whatever the size.
+    if !parallel || cfg!(target_family = "wasm") {
         tasks.for_each(|task| task());
         return;
     }

@@ -323,6 +323,7 @@ pub fn to_treesitter(language: &Language) -> Option<tree_sitter::Language> {
         Language::Swift => Some(tree_sitter_swift::LANGUAGE.into()),
         Language::TSX => Some(tree_sitter_typescript::LANGUAGE_TSX.into()),
         Language::TypeScript => Some(tree_sitter_typescript::LANGUAGE_TYPESCRIPT.into()),
+        #[cfg(feature = "vim")]
         Language::Vimscript => Some(tree_sitter_vim::language()),
         Language::YAML => Some(tree_sitter_yaml::LANGUAGE.into()),
         Language::XML => Some(tree_sitter_xml::LANGUAGE_XML.into()),
