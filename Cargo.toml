@@ -181,7 +181,8 @@ tree-sitter-scala = "0.24"
 tree-sitter-sequel = "0.3.11"
 tree-sitter-swift = "0.7"
 tree-sitter-typescript = "0.23"
-tree-sitter-vim = "0.4"
+# Optional: its 4.5 MB parser.c needs >14 GB RAM to compile for wasm32, so wasm builds leave it out.
+tree-sitter-vim = { version = "0.4", optional = true }
 tree-sitter-xml = "0.7.0"
 tree-sitter-yaml = "0.7"
 # tree-sitter-perl/tree-sitter-perl, the grammar nvim-treesitter uses, is published under this name;
@@ -222,7 +223,8 @@ lzma-rust2 = { version = "0.21", default-features = false, features = ["std", "x
 [features]
 # A bare `cargo install omnidiff` builds the TUI binary; a library consumer opts out with
 # `default-features = false`.
-default = ["tui"]
+default = ["tui", "vim"]
+vim = ["dep:tree-sitter-vim"]
 # Everything the TUI (src/tui/, src/main.rs) needs. Every dev-tool feature implies it: some of those
 # bins use these deps directly, and tracking which ones is not worth it.
 tui = [
