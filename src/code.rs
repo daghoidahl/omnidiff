@@ -202,7 +202,8 @@ pub fn build_sides<A: Send, B>(
     before: impl FnOnce() -> A + Send,
     after: impl FnOnce() -> B,
 ) -> (A, B) {
-    if !parallel {
+    // wasm has no threads: build in order there, whatever the size.
+    if !parallel || cfg!(target_family = "wasm") {
         return (before(), after());
     }
     std::thread::scope(|scope| {
