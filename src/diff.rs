@@ -304,7 +304,8 @@ thread_local! {
 /// Runs `work` on a [`PIPELINE_STACK_SIZE`] thread, or inline when already on one. A panic is
 /// re-raised on the caller's thread.
 fn on_pipeline_stack<R: Send>(work: impl FnOnce() -> R + Send) -> R {
-    if ON_PIPELINE_STACK.get() {
+    // wasm has no threads; its stack size is set at link time instead.
+    if ON_PIPELINE_STACK.get() || cfg!(target_family = "wasm") {
         return work();
     }
     std::thread::scope(|scope| {
